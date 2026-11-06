@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Book Form{% endblock %}
+
+{% block content %}
+
+{% if book %}
+    <h2>Update Book</h2>
+
+    {% if book.image %}
+        <p>Current Image:</p>
+        <img src="{{ book.image.url }}" width="100" alt="{{ book.title }}">
+    {% endif %}
+{% else %}
+    <h2>Add Book</h2>
+{% endif %}
+
+<form method="POST" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit" class="update-btn">
+        {% if book %}
+            Update
+        {% else %}
+            Save
+        {% endif %}
+    </button>
+
+    <a href="{% url 'book_list' %}" class="cancel-btn">Cancel</a>
+
+</form>
+
+{% endblock %}

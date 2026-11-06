@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Book List{% endblock %}
+
+{% block content %}
+
+
+<p>
+    <a href="{% url 'book_create' %}" class="add-btn">Add New Book</a>
+</p>
+
+<div class="book-container">
+
+    {% for book in books %}
+
+    <div class="book-card">
+
+        {% if book.image %}
+            <img src="{{ book.image.url }}" width="150" alt="{{ book.title }}">
+        {% endif %}
+
+        <h3>{{ book.title }}</h3>
+
+        <p>Author: {{ book.author }}</p>
+        <p>Category: {{ book.category }}</p>
+        <p>Price: ₹{{ book.price }}</p>
+        <div>
+
+          {% if book.available %}
+                <p class="available">Available</p>
+            {% else %}
+                <p class="not-available">Not Available</p>
+            {% endif %}
+        </div>
+
+        <div class="actions">
+
+        <a href="{% url 'book_update' book.id %}" class="edit-btn ">Edit</a>
+
+        <a href="{% url 'book_delete' book.id %}" class="delete-btn">Delete</a>
+</div>
+    </div>
+
+    {% empty %}
+
+    <p>No books available.</p>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

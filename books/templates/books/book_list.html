@@ -1,0 +1,259 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Library</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f7f5ef;
+            color: #26352b;
+        }
+
+        header {
+            background: #234536;
+            color: white;
+            text-align: center;
+            padding: 35px 20px;
+            border-bottom: 4px solid #c9a45c;
+        }
+
+        header h1 {
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #e0e8df;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1150px;
+            margin: 35px auto;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            color: #234536;
+            font-size: 25px;
+        }
+
+        .add-btn, .edit-btn, .delete-btn {
+            display: inline-block;
+            text-decoration: none;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .add-btn {
+            background: #234536;
+            color: white;
+        }
+
+        .book-container {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+        }
+
+        .book-card {
+            background: white;
+            border: 1px solid #e3e0d5;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(35, 69, 54, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #c9a45c;
+        }
+
+        .book-card h2 {
+            color: #234536;
+            font-size: 22px;
+            margin: 5px 0 18px;
+        }
+
+        .book-card p {
+            margin: 13px 0;
+            color: #626b62;
+        }
+
+        .category {
+            display: inline-block;
+            background: #e8efe8;
+            color: #234536;
+            padding: 7px 13px;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+
+        .price {
+            color: #9a742e !important;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .available, .not-available {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+
+        .available {
+            color: #216e45 !important;
+            background: #e6f4e9;
+        }
+
+        .not-available {
+            color: #b42318 !important;
+            background: #fde9e7;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .edit-btn {
+            background: #c9a45c;
+            color: #26352b;
+        }
+
+        .delete-btn {
+            background: #b42318;
+            color: white;
+        }
+
+        .empty-message {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            grid-column: 1 / -1;
+        }
+
+        footer {
+            background: #234536;
+            color: #e0e8df;
+            text-align: center;
+            padding: 22px;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 92%;
+            }
+
+            .book-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>My Book Library</h1>
+    <p>Discover Stories, Knowledge and Inspiration</p>
+    <h2>{{ count }} Books</h2>
+</header>
+
+<div class="container">
+
+    <div class="top-bar">
+        <h2 class="section-title">Our Books</h2>
+
+        <a href="{% url 'book_create' %}" class="add-btn">
+            + Add Book
+        </a>
+    </div>
+
+    <div class="book-container">
+
+        {% for book in books %}
+
+        <div class="book-card">
+
+            <h2>{{ book.title }}</h2>
+
+            <p>
+                <strong>Author:</strong> {{ book.author }}
+            </p>
+
+            <p>
+                <span class="category">
+                    {{ book.category }}
+                </span>
+            </p>
+
+            <p class="price">₹{{ book.price }}</p>
+
+            {% if book.available %}
+                <p class="available">Available</p>
+            {% else %}
+                <p class="not-available">Not Available</p>
+            {% endif %}
+
+            <div class="actions">
+                <a href="{% url 'book_update' book.id %}"
+                   class="edit-btn">Edit</a>
+
+                <a href="{% url 'book_delete' book.id %}"
+                   class="delete-btn">Delete</a>
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="empty-message">
+            <p>No books available at the moment.</p>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<footer>
+    <p>My Book Library | Django ORM Practice Project</p>
+</footer>
+
+</body>
+</html>
